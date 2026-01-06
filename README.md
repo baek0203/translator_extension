@@ -40,10 +40,10 @@ cd translator_extention
 
 ```
 translator_extention/
-├── manifest.json          # 확장 프로그램 설정 (28줄)
-├── content.js            # UI 렌더링, DOM 조작 (406줄)
-├── background.js         # 번역 API 핸들러 (200줄)
-├── styles.css           # 번역 UI 스타일 (372줄)
+├── manifest.json          # 확장 프로그램 설정 
+├── content.js            # UI 렌더링, DOM 조작 
+├── background.js         # 번역 API 핸들러 
+├── styles.css           # 번역 UI 스타일 
 ├── icons/               # 확장 프로그램 아이콘
 │   ├── icon16.png       # 16x16 PNG
 │   ├── icon48.png       # 48x48 PNG
@@ -72,9 +72,7 @@ translator_extention/
 - 부드러운 애니메이션 효과
 
 ### 번역 API
-- Google Translate 무료 API 우선 사용
-- 실패 시 MyMemory API로 자동 전환
-- 필요 시 LibreTranslate API 추가 가능
+- Google Translate 무료 API 사용
 
 ## 지원 언어 (maybe not all)
 
@@ -113,15 +111,14 @@ chrome.storage.sync.set({
 ## 문제 해결
 
 ### 번역이 작동하지 않는 경우
-1. **페이지를 새로고침하세요** (F5) - 가장 중요!
+1. **페이지를 새로고침하세요** (F5)
 2. Chrome 확장 프로그램 페이지에서 확장 프로그램이 활성화되어 있는지 확인
 3. Service Worker 상태 확인: `chrome://extensions/` → Service Worker 링크 클릭
 
 ### 번역 버튼이 나타나지 않는 경우
 1. 텍스트를 충분히 선택했는지 확인 (0자 초과, 5000자 미만)
 2. 페이지를 새로고침했는지 확인 (확장 프로그램 업데이트 후 필수)
-3. Chrome 내부 페이지가 아닌지 확인 (chrome://, chrome-extension://에서는 작동 안 함)
-4. 브라우저 콘솔(F12)에서 에러 메시지 확인
+3. 브라우저 콘솔(F12)에서 에러 메시지 확인
 
 ### X.com, YouTube 등 SPA 사이트에서 오류 발생
 **증상**: "Cannot set properties of null" 오류
@@ -145,10 +142,5 @@ MIT License
 
 ## 향후 계획
 
-- [ ] 오프라인 번역 지원
+- [ ] 사용자 생길시 기능추가
 - [ ] 사용자 정의 단축키
-- [ ] 번역 히스토리 저장
-- [ ] 발음 재생 기능
-- [ ] 다양한 번역 엔진 선택 옵션
-- [ ] 팝업 위치 사용자 설정
->>>>>>> Initial commit: Chrome text translator extension
