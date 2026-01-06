@@ -1,6 +1,6 @@
-<<<<<<< HEAD
+
 # translator_extension
-=======
+
 # 텍스트 번역기 Chrome Extension
 
 Chrome에 내장된 기능처럼 텍스트를 드래그하면 번역 버튼이 나타나고, 클릭 시 번역 결과를 보여주는 확장 프로그램입니다.
@@ -31,7 +31,7 @@ cd translator_extention
 ## 사용 방법
 
 1. 웹페이지에서 번역하고 싶은 텍스트를 드래그하여 선택
-2. 나타나는 **번역** 버튼 클릭
+2. 나타나는 **아이콘** 버튼 클릭
 3. 번역 팝업에서 결과 확인
 4. 상단 탭을 클릭하여 다른 언어로 변경 가능
 5. "모든 번역 보기" 버튼으로 여러 언어 동시 확인
@@ -49,8 +49,7 @@ translator_extention/
 │   ├── icon48.png       # 48x48 PNG
 │   └── icon128.png      # 128x128 PNG
 ├── README.md            # 이 파일
-├── tech.md              # 기술 스택 문서
-└── test.md              # 테스트 가이드
+└── tech.md              # 기술 스택 문서
 ```
 
 ## 기술 스택
@@ -77,7 +76,7 @@ translator_extention/
 - 실패 시 MyMemory API로 자동 전환
 - 필요 시 LibreTranslate API 추가 가능
 
-## 지원 언어
+## 지원 언어 (maybe not all)
 
 - 한국어 (ko)
 - English (en)
@@ -115,9 +114,8 @@ chrome.storage.sync.set({
 
 ### 번역이 작동하지 않는 경우
 1. **페이지를 새로고침하세요** (F5) - 가장 중요!
-2. 인터넷 연결을 확인하세요
-3. Chrome 확장 프로그램 페이지에서 확장 프로그램이 활성화되어 있는지 확인
-4. Service Worker 상태 확인: `chrome://extensions/` → Service Worker 링크 클릭
+2. Chrome 확장 프로그램 페이지에서 확장 프로그램이 활성화되어 있는지 확인
+3. Service Worker 상태 확인: `chrome://extensions/` → Service Worker 링크 클릭
 
 ### 번역 버튼이 나타나지 않는 경우
 1. 텍스트를 충분히 선택했는지 확인 (0자 초과, 5000자 미만)
