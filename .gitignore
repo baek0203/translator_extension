@@ -1,0 +1,30 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Windows Zone Identifier
+*:Zone.Identifier
+
+# Editor
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Env
+.env
+.env.*
+
+# Node / build
+node_modules/
+dist/
+build/
+
+# Chrome extension build artifacts
+*.crx
+*.pem
+
+test.md
+plan.md
+claude.md
