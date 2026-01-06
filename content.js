@@ -268,3 +268,34 @@ document.addEventListener('keydown', e => {
     window.getSelection()?.removeAllRanges();
   }
 });
+
+// 스크롤 시 버튼 위치 재계산
+document.addEventListener('scroll', () => {
+  if (!translateButton || translateButton.style.display === 'none') return;
+
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0 || sel.isCollapsed) return;
+
+  // 버튼 위치 다시 계산
+  const rect = getDragEndCaretRect();
+  if (!rect) return;
+
+  const btnW = 30;
+  const btnH = 28;
+  const gap = 8;
+
+  const isLTR = dragEndX >= dragStartX;
+
+  const x = isLTR
+    ? rect.right + window.scrollX + gap
+    : rect.left + window.scrollX - btnW - gap;
+
+  const y =
+    rect.top +
+    window.scrollY +
+    rect.height / 2 -
+    btnH / 2;
+
+  translateButton.style.left = `${x}px`;
+  translateButton.style.top = `${y}px`;
+}, true);
