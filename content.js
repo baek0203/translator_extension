@@ -1,6 +1,7 @@
 let translateButton = null;
 let translationPopup = null;
 let selectedText = '';
+let translatedText = '';
 
 let dragStartX = 0;
 let dragEndX = 0;
@@ -138,6 +139,7 @@ function showPopup() {
       </div>
       <div class="popup-content" id="translated-text">번역 중...</div>
       <div class="popup-footer">
+        <button id="save-translation">저장</button>
         <button id="go-google-web">모든 번역 보기</button>
       </div>
     `;
@@ -146,6 +148,7 @@ function showPopup() {
       const url = `https://translate.google.com/?sl=auto&tl=ko&text=${encodeURIComponent(selectedText)}`;
       window.open(url, '_blank');
     };
+    p.querySelector('#save-translation').onclick = saveTranslation;
 
     document.body.appendChild(p);
     translationPopup = p;
@@ -183,9 +186,67 @@ async function translate(text) {
       text,
       targetLang: 'ko'
     });
-    el.textContent = res?.success ? res.translatedText : '번역 실패';
+    if (res?.success) {
+      translatedText = res.translatedText;
+      el.textContent = translatedText;
+    } else {
+      translatedText = '';
+      el.textContent = '번역 실패';
+    }
   } catch {
+    translatedText = '';
     el.textContent = '오류 발생';
+  }
+}
+
+/* =========================
+   저장 기능
+========================= */
+async function saveTranslation() {
+  if (!selectedText || !translatedText) {
+    alert('저장할 번역이 없습니다.');
+    return;
+  }
+
+  try {
+    const timestamp = new Date().toISOString();
+    const newEntry = {
+      id: Date.now(),
+      original: selectedText,
+      translated: translatedText,
+      timestamp: timestamp,
+      date: new Date().toLocaleString('ko-KR')
+    };
+
+    // 기존 저장 데이터 가져오기
+    const result = await chrome.storage.local.get(['translations']);
+    const translations = result.translations || [];
+
+    // 새 항목 추가 (최신 항목이 맨 앞에)
+    translations.unshift(newEntry);
+
+    // 최대 100개까지만 저장
+    if (translations.length > 100) {
+      translations.pop();
+    }
+
+    // 저장
+    await chrome.storage.local.set({ translations });
+
+    // 저장 완료 알림
+    const saveBtn = document.getElementById('save-translation');
+    if (saveBtn) {
+      const originalText = saveBtn.textContent;
+      saveBtn.textContent = '✓ 저장됨';
+      saveBtn.disabled = true;
+      setTimeout(() => {
+        saveBtn.textContent = originalText;
+        saveBtn.disabled = false;
+      }, 2000);
+    }
+  } catch (error) {
+    console.error('저장 실패:', error);
+    alert('저장에 실패했습니다.');
   }
 }
 

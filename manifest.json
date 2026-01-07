@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "텍스트 번역기",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "텍스트를 드래그하면 번역 버튼이 나타나는 확장 프로그램",
   "permissions": [
     "storage"
@@ -20,6 +20,15 @@
       "run_at": "document_end"
     }
   ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "번역 기록 보기"
+  },
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
