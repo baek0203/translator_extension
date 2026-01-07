@@ -41,14 +41,16 @@ cd translator_extention
 
 ```
 translator_extention/
-├── manifest.json          # 확장 프로그램 설정 
-├── content.js            # UI 렌더링, DOM 조작 
-├── background.js         # 번역 API 핸들러 
+├── manifest.json        # 확장 프로그램 설정 
+├── content.js           # UI 렌더링, DOM 조작 
+├── background.js        # 번역 API 핸들러 
 ├── styles.css           # 번역 UI 스타일 
 ├── icons/               # 확장 프로그램 아이콘
 │   ├── icon16.png       # 16x16 PNG
 │   ├── icon48.png       # 48x48 PNG
 │   └── icon128.png      # 128x128 PNG
+├── popup.html           # 저장된 단어들
+├── popup.js             # 내장된 기능
 ├── README.md            # 이 파일
 └── tech.md              # 기술 스택 문서
 ```
