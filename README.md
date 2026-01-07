@@ -1,6 +1,3 @@
-
-# translator_extension
-
 # 텍스트 번역기 Chrome Extension
 
 Chrome에 내장된 기능처럼 텍스트를 드래그하면 번역 버튼이 나타나고, 클릭 시 번역 결과를 보여주는 확장 프로그램입니다.
