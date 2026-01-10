@@ -132,32 +132,46 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const targetLang = convertLanguageCode(request.targetLang);
     const sourceLang = request.sourceLang || 'auto';
 
-    // Google Translate를 먼저 시도
-    translateText(request.text, targetLang, sourceLang)
-      .then(result => {
+    // 번역 시도 (Google Translate -> MyMemory -> LibreTranslate 순서)
+    (async () => {
+      try {
+        // Google Translate 시도
+        let result = await translateText(request.text, targetLang, sourceLang);
+
         if (result.success) {
           sendResponse(result);
-        } else {
-          // 실패 시 MyMemory로 재시도
-          return translateWithMyMemory(request.text, targetLang, sourceLang);
+          return;
         }
-      })
-      .then(result => {
-        if (result && !result.success) {
-          // MyMemory도 실패 시 LibreTranslate로 재시도
-          return translateWithLibre(request.text, targetLang, sourceLang);
-        }
-        if (result) {
+
+        // Google 실패 시 MyMemory 시도
+        result = await translateWithMyMemory(request.text, targetLang, sourceLang);
+
+        if (result.success) {
           sendResponse(result);
+          return;
         }
-      })
-      .catch(error => {
-        console.error('All translation methods failed:', error);
+
+        // MyMemory 실패 시 LibreTranslate 시도
+        result = await translateWithLibre(request.text, targetLang, sourceLang);
+
+        if (result.success) {
+          sendResponse(result);
+          return;
+        }
+
+        // 모든 방법 실패
         sendResponse({
           success: false,
           error: 'All translation services failed'
         });
-      });
+      } catch (error) {
+        console.error('Translation error:', error);
+        sendResponse({
+          success: false,
+          error: error.message || 'Translation failed'
+        });
+      }
+    })();
 
     // 비동기 응답을 위해 true 반환
     return true;

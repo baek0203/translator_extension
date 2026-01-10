@@ -33,7 +33,7 @@ cd DragTranslator
 1. Chrome 브라우저를 열고 주소창에 `chrome://extensions/` 입력
 2. 오른쪽 상단의 "개발자 모드" 토글을 활성화
 3. "압축해제된 확장 프로그램을 로드합니다" 버튼 클릭
-4. 이 프로젝트 폴더를 선택
+4. 다운로드한 `DragTranslator` 폴더를 선택
 
 ## 사용 방법
 
@@ -63,18 +63,19 @@ cd DragTranslator
 ```
 DragTranslator/
 ├── manifest.json        # 확장 프로그램 설정
-├── content.js           # UI 렌더링, DOM 조작
+├── content.js           # 텍스트 선택 감지 및 번역 팝업 UI
 ├── background.js        # 번역 API 핸들러
-├── styles.css           # 번역 UI 스타일
-├── popup.html           # 설정 페이지
-├── popup.js             # 설정 페이지 로직
-├── history.html         # 번역 기록 페이지
-├── history.js           # 번역 기록 로직
+├── styles.css           # 번역 팝업 UI 스타일
+├── popup.html           # 번역 기록 및 설정 페이지
+├── popup.js             # 번역 기록 및 설정 로직
+├── i18n.js              # 커스텀 다국어 지원 시스템
+├── settings.html        # 언어 설정 페이지
+├── settings.js          # 언어 설정 로직
 ├── icons/               # 확장 프로그램 아이콘
 │   ├── icon16.png       # 16x16 PNG
 │   ├── icon48.png       # 48x48 PNG
 │   └── icon128.png      # 128x128 PNG
-├── _locales/            # 다국어 지원 파일
+├── _locales/            # Chrome i18n API 다국어 파일
 │   ├── ko/              # 한국어
 │   ├── en/              # 영어
 │   ├── ja/              # 일본어
@@ -89,11 +90,13 @@ DragTranslator/
 ## 기술 스택
 
 - **Manifest V3**: 최신 Chrome 확장 프로그램 표준
+- **activeTab 권한**: 설치 시 경고 없이 안전하게 사용
 - **Vanilla JavaScript**: 순수 자바스크립트로 구현
 - **Google Translate API**: 무료 번역 서비스
-- **MyMemory API**: 대체 번역 서비스
+- **Chrome i18n API**: 브라우저 언어 기반 다국어 지원
+- **커스텀 i18n 시스템**: 사용자 선택 언어 기반 동적 UI 변경
+- **Chrome Storage Sync API**: 설정 동기화
 - **CSS3**: 모던 UI 스타일링
-- **popup**: 단어장 기능 제공
 
 ## 주요 기능 설명
 
@@ -131,18 +134,22 @@ DragTranslator/
 ## 커스터마이징
 
 ### 기본 번역 언어 변경
-`background.js`에서 기본 설정을 수정할 수 있습니다:
+확장 프로그램 아이콘 클릭 → 톱니바퀴 아이콘 → 설정 메뉴에서 원하는 언어를 선택하세요.
+코드 수정 없이 UI에서 쉽게 변경할 수 있습니다.
 
-```javascript
-chrome.storage.sync.set({
-  defaultTargetLang: 'ko',  // 원하는 언어 코드로 변경
-  autoDetect: true,
-  showAllTranslations: false
-});
-```
+지원 언어 코드:
+- `ko` - 한국어
+- `en` - English
+- `ja` - 日本語
+- `zh-CN` - 中文 간체
+- `zh-TW` - 中文 번체
+- `es` - Español
+- `fr` - Français
+- `de` - Deutsch
+- 외 8개 언어 더 지원
 
 ### 스타일 수정
-`styles.css`에서 버튼 색상, 팝업 크기 등을 커스터마이징할 수 있습니다.
+[styles.css](styles.css)에서 번역 팝업의 색상, 크기, 폰트 등을 커스터마이징할 수 있습니다.
 
 ## 문제 해결
 
@@ -233,7 +240,7 @@ A Chrome extension that shows a translation button when you drag text, just like
 ### 1. Download Repository
 ```bash
 git clone https://github.com/baek0203/DragTranslator.git
-cd translator_extention
+cd DragTranslator
 ```
 
 ### 2. Load as Chrome Extension
@@ -241,40 +248,49 @@ cd translator_extention
 1. Open Chrome browser and enter `chrome://extensions/` in the address bar
 2. Enable "Developer mode" toggle in the top right
 3. Click "Load unpacked" button
-4. Select this project folder
+4. Select the downloaded `DragTranslator` folder
 
 ## How to Use
 
-### Change Settings
-1. Click the extension icon in the browser toolbar
-2. Select your preferred translation language (Korean, English, Japanese, etc. - 16 languages available)
-3. Click "Save" button
-4. Click "View Translation History" link to see your saved translations
+### 1. Language Settings
+1. Click the extension icon in the browser toolbar → Translation History screen appears
+2. Click the **gear icon (⚙️)** in the top right → Menu displays
+3. Select **"Settings"** menu → Go to language settings screen
+4. Select your preferred language (choose from 16 languages)
+   - Both UI and translation target language change to your selected language
+5. Click **"Save"** button → Settings saved and automatically return to history screen
 
-### Translate Text
+### 2. Translate Text
 1. Drag to select the text you want to translate on a webpage
-2. Click the **translation icon** button that appears
+2. Click the **translation icon (🔤)** button that appears
 3. View the translation result in the popup (automatically translated to your selected language)
-4. Click "Save" button to save the translation
-5. Use "View All Translations" button to see multiple languages on Google Translate
+4. **"Save"** button: Save the translation to your history
+5. **"View All Translations"** button: View multiple languages simultaneously on Google Translate
+
+### 3. Other Menu Options
+Menu displayed when clicking the gear icon:
+- **Settings**: Language settings screen
+- **Report an Issue**: Feedback form
+- **Info / Version**: Extension information
 
 ## File Structure
 
 ```
 DragTranslator/
 ├── manifest.json        # Extension configuration
-├── content.js           # UI rendering, DOM manipulation
+├── content.js           # Text selection detection and translation popup UI
 ├── background.js        # Translation API handler
-├── styles.css           # Translation UI styles
-├── popup.html           # Settings page
-├── popup.js             # Settings page logic
-├── history.html         # Translation history page
-├── history.js           # Translation history logic
+├── styles.css           # Translation popup UI styles
+├── popup.html           # Translation history and settings page
+├── popup.js             # Translation history and settings logic
+├── i18n.js              # Custom internationalization system
+├── settings.html        # Language settings page
+├── settings.js          # Language settings logic
 ├── icons/               # Extension icons
 │   ├── icon16.png       # 16x16 PNG
 │   ├── icon48.png       # 48x48 PNG
 │   └── icon128.png      # 128x128 PNG
-├── _locales/            # Internationalization files
+├── _locales/            # Chrome i18n API multilingual files
 │   ├── ko/              # Korean
 │   ├── en/              # English
 │   ├── ja/              # Japanese
@@ -289,12 +305,13 @@ DragTranslator/
 ## Technology Stack
 
 - **Manifest V3**: Latest Chrome extension standard
+- **activeTab Permission**: Safe usage without installation warnings
 - **Vanilla JavaScript**: Implemented in pure JavaScript
 - **Google Translate API**: Free translation service
-- **MyMemory API**: Alternative translation service
+- **Chrome i18n API**: Browser language-based multi-language support
+- **Custom i18n System**: Dynamic UI changes based on user-selected language
+- **Chrome Storage Sync API**: Settings synchronization
 - **CSS3**: Modern UI styling
-- **Chrome i18n API**: Multi-language support
-- **popup**: Vocabulary feature
 
 ## Key Features Explained
 
@@ -344,7 +361,8 @@ Automatically selected based on browser language:
 ## Customization
 
 ### Change Default Translation Language
-Simply click the extension icon and select your preferred language in the settings page. No code modification needed!
+Simply click the extension icon → Gear icon → Settings menu to select your preferred language.
+No code modification needed!
 
 Supported language codes:
 - `ko` - Korean
@@ -355,10 +373,10 @@ Supported language codes:
 - `es` - Spanish
 - `fr` - French
 - `de` - German
-- And more...
+- Plus 8 more languages
 
 ### Style Modification
-You can customize button colors, popup size, etc. in [styles.css](styles.css).
+You can customize translation popup colors, size, fonts, etc. in [styles.css](styles.css).
 
 ## Troubleshooting
 

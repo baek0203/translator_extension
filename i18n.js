@@ -28,7 +28,10 @@ const UI_TRANSLATIONS = {
     contactUs: '불편한 점을 알려주세요',
     version: '버전:',
     name: '이름:',
-    description: '설명:'
+    description: '설명:',
+    translationFailed: '다시 시도해주세요',
+    translationTimeout: '다시 시도해주세요',
+    errorOccurred: '다시 시도해주세요'
   },
   en: {
     settings: 'Settings',
@@ -58,7 +61,10 @@ const UI_TRANSLATIONS = {
     contactUs: 'Report an Issue',
     version: 'Version:',
     name: 'Name:',
-    description: 'Description:'
+    description: 'Description:',
+    translationFailed: 'Please try again',
+    translationTimeout: 'Please try again',
+    errorOccurred: 'Please try again'
   },
   ja: {
     settings: '設定',
@@ -88,7 +94,10 @@ const UI_TRANSLATIONS = {
     contactUs: '問題を報告',
     version: 'バージョン:',
     name: '名前:',
-    description: '説明:'
+    description: '説明:',
+    translationFailed: 'もう一度お試しください',
+    translationTimeout: 'もう一度お試しください',
+    errorOccurred: 'もう一度お試しください'
   },
   'zh-CN': {
     settings: '设置',
@@ -118,7 +127,10 @@ const UI_TRANSLATIONS = {
     contactUs: '报告问题',
     version: '版本：',
     name: '名称：',
-    description: '描述：'
+    description: '描述：',
+    translationFailed: '请重试',
+    translationTimeout: '请重试',
+    errorOccurred: '请重试'
   },
   es: {
     settings: 'Configuración',
@@ -148,7 +160,10 @@ const UI_TRANSLATIONS = {
     contactUs: 'Reportar un Problema',
     version: 'Versión:',
     name: 'Nombre:',
-    description: 'Descripción:'
+    description: 'Descripción:',
+    translationFailed: 'Inténtelo de nuevo',
+    translationTimeout: 'Inténtelo de nuevo',
+    errorOccurred: 'Inténtelo de nuevo'
   },
   fr: {
     settings: 'Paramètres',
@@ -178,7 +193,10 @@ const UI_TRANSLATIONS = {
     contactUs: 'Signaler un Problème',
     version: 'Version :',
     name: 'Nom :',
-    description: 'Description :'
+    description: 'Description :',
+    translationFailed: 'Veuillez réessayer',
+    translationTimeout: 'Veuillez réessayer',
+    errorOccurred: 'Veuillez réessayer'
   },
   de: {
     settings: 'Einstellungen',
@@ -208,7 +226,10 @@ const UI_TRANSLATIONS = {
     contactUs: 'Problem Melden',
     version: 'Version:',
     name: 'Name:',
-    description: 'Beschreibung:'
+    description: 'Beschreibung:',
+    translationFailed: 'Bitte versuchen Sie es erneut',
+    translationTimeout: 'Bitte versuchen Sie es erneut',
+    errorOccurred: 'Bitte versuchen Sie es erneut'
   },
   ru: {
     settings: 'Настройки',
@@ -238,7 +259,10 @@ const UI_TRANSLATIONS = {
     contactUs: 'Сообщить о проблеме',
     version: 'Версия:',
     name: 'Название:',
-    description: 'Описание:'
+    description: 'Описание:',
+    translationFailed: 'Ошибка перевода',
+    translationTimeout: 'Время перевода истекло. Пожалуйста, попробуйте еще раз.',
+    errorOccurred: 'Произошла ошибка'
   },
   pt: {
     settings: 'Configurações',
@@ -268,7 +292,10 @@ const UI_TRANSLATIONS = {
     contactUs: 'Relatar um Problema',
     version: 'Versão:',
     name: 'Nome:',
-    description: 'Descrição:'
+    description: 'Descrição:',
+    translationFailed: 'Falha na tradução',
+    translationTimeout: 'Tempo limite de tradução. Por favor, tente novamente.',
+    errorOccurred: 'Ocorreu um erro'
   },
   it: {
     settings: 'Impostazioni',
@@ -298,7 +325,10 @@ const UI_TRANSLATIONS = {
     contactUs: 'Segnala un Problema',
     version: 'Versione:',
     name: 'Nome:',
-    description: 'Descrizione:'
+    description: 'Descrizione:',
+    translationFailed: 'Traduzione fallita',
+    translationTimeout: 'Timeout traduzione. Per favore riprova.',
+    errorOccurred: 'Si è verificato un errore'
   }
 };
 

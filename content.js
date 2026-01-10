@@ -205,21 +205,33 @@ async function translate(text) {
     const settings = await chrome.storage.sync.get(['targetLanguage']);
     const targetLang = settings.targetLanguage || 'ko';
 
-    const res = await chrome.runtime.sendMessage({
+    // 타임아웃 추가 (10초)
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Translation timeout')), 10000);
+    });
+
+    const translationPromise = chrome.runtime.sendMessage({
       action: 'translate',
       text,
       targetLang: targetLang
     });
+
+    const res = await Promise.race([translationPromise, timeoutPromise]);
+
     if (res?.success) {
       translatedText = res.translatedText;
       el.textContent = translatedText;
     } else {
       translatedText = '';
-      el.textContent = chrome.i18n.getMessage('translationFailed');
+      el.textContent = uiTexts.translationFailed || chrome.i18n.getMessage('translationFailed') || 'Translation failed';
     }
-  } catch {
+  } catch (error) {
+    console.error('Translation error:', error);
     translatedText = '';
-    el.textContent = chrome.i18n.getMessage('errorOccurred');
+    const errorMsg = error.message === 'Translation timeout'
+      ? (uiTexts.translationTimeout || 'Translation timeout. Please try again.')
+      : (uiTexts.errorOccurred || chrome.i18n.getMessage('errorOccurred') || 'An error occurred');
+    el.textContent = errorMsg;
   }
 }
 

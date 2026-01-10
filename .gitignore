@@ -25,6 +25,4 @@ build/
 *.crx
 *.pem
 
-test.md
-plan.md
-claude.md
+tech.md
