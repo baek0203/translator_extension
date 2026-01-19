@@ -1,4 +1,4 @@
-# DragTranslator - Chrome Extension
+# Instant translate - Chrome Extension
 
 [한국어](#한국어) | [English](#english)
 
