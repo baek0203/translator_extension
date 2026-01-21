@@ -1,26 +1,6 @@
 // Dashboard Settings Module
 
 const Settings = {
-  // Translation languages
-  TRANSLATION_LANGUAGES: [
-    { code: 'ko', name: '한국어' },
-    { code: 'en', name: 'English' },
-    { code: 'ja', name: '日本語' },
-    { code: 'zh-CN', name: '中文(简体)' },
-    { code: 'zh-TW', name: '中文(繁體)' },
-    { code: 'es', name: 'Español' },
-    { code: 'fr', name: 'Français' },
-    { code: 'de', name: 'Deutsch' },
-    { code: 'ru', name: 'Русский' },
-    { code: 'pt', name: 'Português' },
-    { code: 'it', name: 'Italiano' },
-    { code: 'ar', name: 'العربية' },
-    { code: 'vi', name: 'Tiếng Việt' },
-    { code: 'th', name: 'ไทย' },
-    { code: 'id', name: 'Bahasa Indonesia' },
-    { code: 'hi', name: 'हिन्दी' }
-  ],
-
   // UI languages (based on available locales)
   UI_LANGUAGES: [
     { code: 'en', name: 'English' },
@@ -38,8 +18,6 @@ const Settings = {
   hasChanges: false,
 
   init() {
-    this.targetLangSelect = document.getElementById('target-language');
-    this.secondLangSelect = document.getElementById('second-language');
     this.uiLangSelect = document.getElementById('ui-language');
     this.themeSelect = document.getElementById('theme-select');
     this.saveBtn = document.getElementById('settings-save-btn');
@@ -48,19 +26,10 @@ const Settings = {
     this.populateSelects();
     this.loadSettings();
     this.bindEvents();
+    this.loadVersionInfo();
   },
 
   populateSelects() {
-    // Populate translation language dropdowns
-    this.TRANSLATION_LANGUAGES.forEach(lang => {
-      if (this.targetLangSelect) {
-        this.targetLangSelect.add(new Option(lang.name, lang.code));
-      }
-      if (this.secondLangSelect) {
-        this.secondLangSelect.add(new Option(lang.name, lang.code));
-      }
-    });
-
     // Populate UI language dropdown
     this.UI_LANGUAGES.forEach(lang => {
       if (this.uiLangSelect) {
@@ -72,27 +41,17 @@ const Settings = {
   async loadSettings() {
     try {
       const result = await chrome.storage.sync.get([
-        'targetLanguage',
-        'secondLanguage',
         'uiLanguage',
         'theme'
       ]);
 
       // Store original values
       this.originalSettings = {
-        targetLanguage: result.targetLanguage || 'ko',
-        secondLanguage: result.secondLanguage || 'en',
         uiLanguage: result.uiLanguage || 'en',
         theme: result.theme || 'auto'
       };
 
       // Apply to selects
-      if (this.targetLangSelect) {
-        this.targetLangSelect.value = this.originalSettings.targetLanguage;
-      }
-      if (this.secondLangSelect) {
-        this.secondLangSelect.value = this.originalSettings.secondLanguage;
-      }
       if (this.uiLangSelect) {
         this.uiLangSelect.value = this.originalSettings.uiLanguage;
       }
@@ -109,8 +68,6 @@ const Settings = {
 
   bindEvents() {
     // Track changes on all selects
-    this.targetLangSelect?.addEventListener('change', () => this.onSettingChange());
-    this.secondLangSelect?.addEventListener('change', () => this.onSettingChange());
     this.uiLangSelect?.addEventListener('change', () => this.onSettingChange());
     this.themeSelect?.addEventListener('change', () => this.onSettingChange());
 
@@ -125,8 +82,6 @@ const Settings = {
     // Check if any value differs from original
     const currentSettings = this.getCurrentSettings();
     this.hasChanges =
-      currentSettings.targetLanguage !== this.originalSettings.targetLanguage ||
-      currentSettings.secondLanguage !== this.originalSettings.secondLanguage ||
       currentSettings.uiLanguage !== this.originalSettings.uiLanguage ||
       currentSettings.theme !== this.originalSettings.theme;
 
@@ -140,8 +95,6 @@ const Settings = {
 
   getCurrentSettings() {
     return {
-      targetLanguage: this.targetLangSelect?.value || 'ko',
-      secondLanguage: this.secondLangSelect?.value || 'en',
       uiLanguage: this.uiLangSelect?.value || 'en',
       theme: this.themeSelect?.value || 'auto'
     };
@@ -165,8 +118,6 @@ const Settings = {
     try {
       // Save all settings
       await chrome.storage.sync.set({
-        targetLanguage: currentSettings.targetLanguage,
-        secondLanguage: currentSettings.secondLanguage,
         uiLanguage: currentSettings.uiLanguage,
         theme: currentSettings.theme
       });
@@ -199,12 +150,6 @@ const Settings = {
     if (!this.hasChanges) return;
 
     // Restore original values
-    if (this.targetLangSelect) {
-      this.targetLangSelect.value = this.originalSettings.targetLanguage;
-    }
-    if (this.secondLangSelect) {
-      this.secondLangSelect.value = this.originalSettings.secondLanguage;
-    }
     if (this.uiLangSelect) {
       this.uiLangSelect.value = this.originalSettings.uiLanguage;
     }
@@ -219,6 +164,15 @@ const Settings = {
     this.updateButtonStates();
 
     DashboardUtils.showToast(DashboardUtils.getMessage('changesDiscarded') || 'Changes discarded');
+  },
+
+  loadVersionInfo() {
+    // Load version from manifest
+    const versionEl = document.getElementById('version-value');
+    if (versionEl && chrome.runtime?.getManifest) {
+      const manifest = chrome.runtime.getManifest();
+      versionEl.textContent = manifest.version || '1.6.0';
+    }
   }
 };
 

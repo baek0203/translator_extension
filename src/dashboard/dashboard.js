@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Initialize modules
   Settings.init();
   Vocabulary.init();
-  Info.init();
 
   console.log('Dashboard initialized');
 });

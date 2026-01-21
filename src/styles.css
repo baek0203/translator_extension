@@ -74,6 +74,42 @@
   color: #bdc1c6;
 
   border-bottom: 1px solid #3c4043;
+  cursor: move;
+  user-select: none;
+}
+
+.popup-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: default;
+}
+
+/* language select */
+.popup-lang-select {
+  background: #303134;
+  color: #e8eaed;
+  border: 1px solid #5f6368;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+  min-width: 100px;
+}
+
+.popup-lang-select:hover {
+  border-color: #8ab4f8;
+}
+
+.popup-lang-select:focus {
+  border-color: #8ab4f8;
+  box-shadow: 0 0 0 2px rgba(138, 180, 248, 0.2);
+}
+
+.popup-lang-select option {
+  background: #303134;
+  color: #e8eaed;
 }
 
 /* content */
@@ -144,3 +180,59 @@
 }
 
 /* 딥링크 하이라이트는 Selection API 사용 (브라우저 기본 선택 스타일) */
+
+/* ============================================
+   Light Theme for Popup
+   ============================================ */
+.translator-popup.theme-light {
+  background: #ffffff;
+  color: #202124;
+  border: 1px solid #dadce0;
+  box-shadow: 0 6px 28px rgba(0,0,0,0.15);
+}
+
+.translator-popup.theme-light .popup-header {
+  color: #5f6368;
+  border-bottom: 1px solid #dadce0;
+}
+
+.translator-popup.theme-light .popup-lang-select {
+  background: #f8f9fa;
+  color: #202124;
+  border: 1px solid #dadce0;
+}
+
+.translator-popup.theme-light .popup-lang-select:hover {
+  border-color: #1a73e8;
+}
+
+.translator-popup.theme-light .popup-lang-select:focus {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+}
+
+.translator-popup.theme-light .popup-lang-select option {
+  background: #ffffff;
+  color: #202124;
+}
+
+.translator-popup.theme-light .popup-footer {
+  border-top: 1px solid #dadce0;
+}
+
+.translator-popup.theme-light #save-translation,
+.translator-popup.theme-light #go-google-web {
+  color: #1a73e8;
+}
+
+.translator-popup.theme-light #save-translation:disabled {
+  color: #9aa0a6;
+}
+
+.translator-popup.theme-light .close-x {
+  color: #5f6368;
+}
+
+.translator-popup.theme-light .close-x:hover {
+  color: #202124;
+}

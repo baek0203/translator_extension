@@ -837,3 +837,14 @@ const languages = (typeof LANGUAGES !== 'undefined' && LANGUAGES)
 - ✅ 10개 언어 지원
 - ✅ 번역 히스토리 기능
 - ✅ 설정 페이지
+
+### v1.6.0 (2026-01-20)
+- ✅ 이름 변경: DragTranslator → Instant Translate
+- ✅ 대시보드 UI 구현 (팝업 대신 전체 페이지)
+- ✅ 단어장 2열 레이아웃 (단어/문장 분리)
+- ✅ 딥링크 기능: 저장된 번역 클릭 시 원본 페이지로 이동 + 텍스트 하이라이트 (Ctrl+F 스타일)
+- ✅ 글꼴 크기 조절: 단어장 페이지에서 -/M/+ 버튼으로 조절 (S, M, L, XL)
+- ✅ 설정 페이지 Save/Cancel 버튼 추가 (자동저장 → 명시적 저장)
+- ✅ 전체선택 기능 추가 (대량 삭제용)
+- ✅ 사용하지 않는 파일 정리: popup.html, settings.html, src/popup/, src/settings/
+- ✅ 16개 언어 지원

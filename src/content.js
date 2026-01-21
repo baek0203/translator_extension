@@ -80,8 +80,9 @@ if (window.__translatorInitialized) {
 
       currentUILanguage = await Translate.getUILanguage();
       const uiTexts = getUILanguage(currentUILanguage);
+      const targetLang = await Translate.getTargetLanguage();
 
-      await Popup.create(uiTexts);
+      await Popup.create(uiTexts, targetLang);
 
       const sel = window.getSelection();
       if (!sel || sel.rangeCount === 0) return;
@@ -97,9 +98,14 @@ if (window.__translatorInitialized) {
 
       // Google 번역 버튼 핸들러
       Popup.onGoogleWeb(async () => {
-        const targetLang = await Translate.getTargetLanguage();
-        const url = `https://translate.google.com/?sl=auto&tl=${targetLang}&text=${encodeURIComponent(selectedText)}`;
+        const currentLang = Popup.getTargetLanguage();
+        const url = `https://translate.google.com/?sl=auto&tl=${currentLang}&text=${encodeURIComponent(selectedText)}`;
         window.open(url, '_blank');
+      });
+
+      // 언어 변경 핸들러 - 선택 시 재번역
+      Popup.onLanguageChange(async (newLang) => {
+        await translateWithLang(selectedText, newLang);
       });
 
     } catch (error) {
@@ -111,11 +117,18 @@ if (window.__translatorInitialized) {
      번역 처리
   ========================= */
   async function translate(text) {
+    const targetLang = await Translate.getTargetLanguage();
+    await translateWithLang(text, targetLang);
+  }
+
+  /**
+   * 특정 언어로 번역
+   */
+  async function translateWithLang(text, targetLang) {
     const uiTexts = getUILanguage(currentUILanguage);
     Popup.setTranslation(uiTexts.translating);
 
     try {
-      const targetLang = await Translate.getTargetLanguage();
       const res = await Translate.request(text, targetLang);
 
       if (res?.success) {

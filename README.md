@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# Instant translate - Chrome Extension
-=======
-# Instant Translate - Chrome Extension
->>>>>>> refactor & develop dashboard with some page
+# DragTranslator - Chrome Extension
 
 [한국어](#한국어) | [English](#english)
 

@@ -28,12 +28,6 @@
           </svg>
           <span data-i18n="settings">Settings</span>
         </a>
-        <a href="#info" class="nav-item" data-tab="info">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-          </svg>
-          <span data-i18n="info">Information</span>
-        </a>
       </nav>
     </aside>
 
@@ -102,30 +96,6 @@
       <!-- Settings Tab -->
       <section id="settings-tab" class="tab-content">
         <div class="card">
-          <h2 class="card-title" data-i18n="translationSettings">Translation</h2>
-
-          <div class="setting-item">
-            <div class="setting-info">
-              <h3 data-i18n="targetLanguage">Target language</h3>
-              <p data-i18n="targetLanguageDesc">Select the default target language for translation.</p>
-            </div>
-            <select id="target-language" class="select">
-              <!-- Options will be populated by JavaScript -->
-            </select>
-          </div>
-
-          <div class="setting-item">
-            <div class="setting-info">
-              <h3 data-i18n="secondLanguage">Second language</h3>
-              <p data-i18n="secondLanguageDesc">Select the second target language.</p>
-            </div>
-            <select id="second-language" class="select">
-              <!-- Options will be populated by JavaScript -->
-            </select>
-          </div>
-        </div>
-
-        <div class="card">
           <h2 class="card-title" data-i18n="appearance">Appearance</h2>
 
           <div class="setting-item">
@@ -156,10 +126,8 @@
           <button class="btn btn-secondary" id="settings-cancel-btn" data-i18n="cancel" disabled>Cancel</button>
           <button class="btn btn-primary" id="settings-save-btn" data-i18n="saveSettings" disabled>Save Settings</button>
         </div>
-      </section>
 
-      <!-- Information Tab -->
-      <section id="info-tab" class="tab-content">
+        <!-- About Section (moved from Info tab) -->
         <div class="card">
           <h2 class="card-title" data-i18n="about">About</h2>
 
@@ -179,6 +147,7 @@
           </div>
         </div>
 
+        <!-- Support Section -->
         <div class="card">
           <h2 class="card-title" data-i18n="support">Support</h2>
           <p class="contact-desc" data-i18n="contactDesc">Have questions, suggestions, or found a bug? Let us know!</p>
@@ -202,7 +171,6 @@
   <script src="src/dashboard/core/theme.js"></script>
   <script src="src/dashboard/vocabulary/vocabulary.js"></script>
   <script src="src/dashboard/settings/settings.js"></script>
-  <script src="src/dashboard/info/info.js"></script>
   <script src="src/dashboard/dashboard.js"></script>
 </body>
 </html>
