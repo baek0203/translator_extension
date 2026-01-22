@@ -28,5 +28,6 @@ zip/
 
 # Backup files
 *.backup
+docs/
 
 tech.md
