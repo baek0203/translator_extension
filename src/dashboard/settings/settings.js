@@ -18,6 +18,7 @@ const Settings = {
   hasChanges: false,
 
   init() {
+    this.targetLangSelect = document.getElementById('target-language');
     this.uiLangSelect = document.getElementById('ui-language');
     this.themeSelect = document.getElementById('theme-select');
     this.saveBtn = document.getElementById('settings-save-btn');
@@ -30,6 +31,13 @@ const Settings = {
   },
 
   populateSelects() {
+    // Populate target language dropdown (all translation languages)
+    if (this.targetLangSelect && window.LANGUAGES) {
+      window.LANGUAGES.forEach(lang => {
+        this.targetLangSelect.add(new Option(lang.nativeName, lang.code));
+      });
+    }
+
     // Populate UI language dropdown
     this.UI_LANGUAGES.forEach(lang => {
       if (this.uiLangSelect) {
@@ -41,17 +49,22 @@ const Settings = {
   async loadSettings() {
     try {
       const result = await chrome.storage.sync.get([
+        'targetLanguage',
         'uiLanguage',
         'theme'
       ]);
 
       // Store original values
       this.originalSettings = {
+        targetLanguage: result.targetLanguage || 'ko',
         uiLanguage: result.uiLanguage || 'en',
         theme: result.theme || 'auto'
       };
 
       // Apply to selects
+      if (this.targetLangSelect) {
+        this.targetLangSelect.value = this.originalSettings.targetLanguage;
+      }
       if (this.uiLangSelect) {
         this.uiLangSelect.value = this.originalSettings.uiLanguage;
       }
@@ -68,6 +81,7 @@ const Settings = {
 
   bindEvents() {
     // Track changes on all selects
+    this.targetLangSelect?.addEventListener('change', () => this.onSettingChange());
     this.uiLangSelect?.addEventListener('change', () => this.onSettingChange());
     this.themeSelect?.addEventListener('change', () => this.onSettingChange());
 
@@ -82,6 +96,7 @@ const Settings = {
     // Check if any value differs from original
     const currentSettings = this.getCurrentSettings();
     this.hasChanges =
+      currentSettings.targetLanguage !== this.originalSettings.targetLanguage ||
       currentSettings.uiLanguage !== this.originalSettings.uiLanguage ||
       currentSettings.theme !== this.originalSettings.theme;
 
@@ -95,6 +110,7 @@ const Settings = {
 
   getCurrentSettings() {
     return {
+      targetLanguage: this.targetLangSelect?.value || 'ko',
       uiLanguage: this.uiLangSelect?.value || 'en',
       theme: this.themeSelect?.value || 'auto'
     };
@@ -118,6 +134,7 @@ const Settings = {
     try {
       // Save all settings
       await chrome.storage.sync.set({
+        targetLanguage: currentSettings.targetLanguage,
         uiLanguage: currentSettings.uiLanguage,
         theme: currentSettings.theme
       });
@@ -150,6 +167,9 @@ const Settings = {
     if (!this.hasChanges) return;
 
     // Restore original values
+    if (this.targetLangSelect) {
+      this.targetLangSelect.value = this.originalSettings.targetLanguage;
+    }
     if (this.uiLangSelect) {
       this.uiLangSelect.value = this.originalSettings.uiLanguage;
     }

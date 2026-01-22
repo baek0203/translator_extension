@@ -848,3 +848,81 @@ const languages = (typeof LANGUAGES !== 'undefined' && LANGUAGES)
 - ✅ 전체선택 기능 추가 (대량 삭제용)
 - ✅ 사용하지 않는 파일 정리: popup.html, settings.html, src/popup/, src/settings/
 - ✅ 16개 언어 지원
+- ✅ 번역 팝업에서 직접 언어 선택 가능 (드롭다운)
+- ✅ 번역 팝업 드래그하여 위치 이동 가능
+- ✅ 번역 팝업 테마가 설정 테마를 따라감 (Light/Dark)
+- ✅ Settings에서 Translation 섹션 제거 (팝업에서 직접 선택)
+- ✅ Information 탭을 Settings 내로 통합
+
+---
+
+## 기능 가능성 분석 (Feature Feasibility Analysis)
+
+### 이미지 OCR 번역 기능 (PaddleOCR)
+
+**요청 사항**: 웹페이지에서 이미지 우클릭 → "이미지 번역" 컨텍스트 메뉴로 OCR 후 번역
+
+#### 실현 가능성: 70% (높음)
+
+##### 기술 스택 분석
+
+| 항목 | 상태 | 설명 |
+|------|------|------|
+| 브라우저 OCR | ✅ 가능 | PaddleOCR의 ONNX 모델을 브라우저에서 실행 가능 |
+| JavaScript 라이브러리 | ✅ 존재 | [@gutenye/ocr-browser](https://github.com/gutenye/ocr), [paddleocr-browser](https://github.com/xulihang/paddleocr-browser) |
+| Context Menu API | ✅ 가능 | Chrome Extension의 `chrome.contextMenus` API로 이미지 우클릭 메뉴 추가 가능 |
+| 다국어 지원 | ✅ 가능 | PaddleOCR PP-OCRv4는 100+ 언어 지원 |
+
+##### 구현 방식
+
+```
+1. manifest.json에 contextMenus 권한 추가
+2. 이미지 우클릭 시 "Translate Image" 메뉴 표시
+3. 이미지 데이터 가져오기 (canvas로 변환)
+4. @gutenye/ocr-browser로 OCR 수행
+5. 추출된 텍스트를 기존 번역 API로 번역
+6. 결과를 팝업 또는 오버레이로 표시
+```
+
+##### 장점
+- 100% 클라이언트 사이드 (서버 불필요, 프라이버시 보장)
+- 기존 번역 시스템과 통합 용이
+- 유사 확장 프로그램 다수 존재: [ImageTrans](https://github.com/xulihang/ImageTrans_chrome_extension), [Copyfish](https://github.com/A9T9/Copyfish)
+
+##### 단점 / 도전 과제
+| 항목 | 난이도 | 설명 |
+|------|--------|------|
+| 모델 크기 | 🟡 중간 | ONNX 모델 파일 ~10-50MB, 최초 로딩 시간 필요 |
+| 메모리 사용 | 🟡 중간 | WebAssembly + ONNX Runtime은 메모리 소비가 큼 |
+| 처리 속도 | 🟡 중간 | 300-1500ms (이미지 크기, 디바이스에 따라 다름) |
+| CORS 제한 | 🔴 높음 | 외부 이미지는 CORS로 인해 canvas 접근 제한될 수 있음 |
+| 복잡한 레이아웃 | 🟡 중간 | 만화, 복잡한 배경의 텍스트는 정확도 저하 가능 |
+
+##### 구현 우선순위 제안
+
+**Phase 1 (MVP)** - 실현 가능성 90%
+- 같은 도메인 이미지만 지원
+- 단순 텍스트 추출 + 번역 결과 팝업 표시
+
+**Phase 2 (고급)** - 실현 가능성 60%
+- 외부 이미지 지원 (background script로 fetch)
+- 이미지 위에 번역 텍스트 오버레이
+
+**Phase 3 (완성)** - 실현 가능성 40%
+- 실시간 이미지 내 텍스트 대체
+- 만화/웹툰 번역 지원
+
+##### 참고 자료
+- [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR) - 원본 프로젝트
+- [@gutenye/ocr](https://github.com/gutenye/ocr) - 브라우저용 JS 라이브러리
+- [paddleocr-browser](https://github.com/xulihang/paddleocr-browser) - 브라우저 데모
+- [ImageTrans Chrome Extension](https://github.com/xulihang/ImageTrans_chrome_extension) - 유사 구현 참고
+- [Copyfish](https://github.com/A9T9/Copyfish) - 오픈소스 OCR 확장
+
+##### 결론
+**가볍게 구현 가능한가?** → **아니오**, 하지만 **충분히 실현 가능**
+
+- "가볍게"는 어렵다: 모델 로딩, CORS 처리, 메모리 관리 등 고려사항 많음
+- 하지만 이미 검증된 라이브러리들이 있어 바닥부터 만들 필요 없음
+- MVP 수준이라면 1-2주 내 구현 가능
+- 완성도 높은 버전은 1-2달 예상

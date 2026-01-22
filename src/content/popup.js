@@ -224,6 +224,24 @@ const Popup = {
    */
   endDrag() {
     this.isDragging = false;
+  },
+
+  /**
+   * 테마 설정 가져오기
+   */
+  async getTheme() {
+    try {
+      const result = await chrome.storage.sync.get(['theme']);
+      const theme = result.theme || 'auto';
+
+      if (theme === 'auto') {
+        // 시스템 테마 감지
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      return theme;
+    } catch (error) {
+      return 'dark'; // 기본값
+    }
   }
 };
 
